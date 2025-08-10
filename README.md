@@ -1,8 +1,8 @@
-# ViewStrokeKit - 视图描边工具
+# ViewStroke - 视图描边工具
 
 ![Swift Version](https://img.shields.io/badge/Swift-5.9+-orange.svg) ![Platform](https://img.shields.io/badge/Platform-iOS%2016+%20%7C%20macOS%2014+%20%7C%20tvOS%2013+%20%7C%20watchOS%206+-lightgrey.svg) ![License](https://img.shields.io/badge/License-MIT-blue.svg) ![SPM Ready](https://img.shields.io/badge/SPM-Compatible-brightgreen.svg)
 
-ViewStrokeKit 是一个轻量级 SwiftUI 视图描边库，提供简单易用的 API 为任意视图添加纯色或渐变色描边效果。
+ViewStroke 是一个轻量级 SwiftUI 视图描边库，提供简单易用的 API 为任意视图添加纯色或渐变色描边效果。
 
 
 
@@ -29,7 +29,7 @@ ViewStrokeKit 是一个轻量级 SwiftUI 视图描边库，提供简单易用的
 ### Swift Package Manager
 
 1. 在 Xcode 中选择 **File > Add Packages...**
-2. 输入仓库地址：`https://github.com/swiftuihome/ViewStrokeKit`
+2. 输入仓库地址：`https://github.com/swiftuihome/ViewStroke`
 3. 选择版本规则（推荐最新版本）
 4. 点击 **Add Package**
 
@@ -37,7 +37,7 @@ ViewStrokeKit 是一个轻量级 SwiftUI 视图描边库，提供简单易用的
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swiftuihome/ViewStrokeKit.git", from: "1.2.1")
+    .package(url: "https://github.com/swiftuihome/ViewStroke.git", from: "1.0.0")
 ]
 ```
 
@@ -45,53 +45,29 @@ dependencies: [
 
 ## 🎨 使用指南
 
-### 纯色描边
-
-```swift
-import SwiftUI
-
-// 描边效果示例视图
-public struct StrokeViewDemo: View {
-    public init() {}
-    public var body: some View {
-        VStack {
-            Image(systemName: "swift")
-                .foregroundStyle(.white)
-                .font(.system(size: 60))
-                .viewStroke(.orange, width: 3)
-            
-            Text("SwiftUI")
-                .foregroundStyle(.cyan)
-                .font(.system(size: 60, weight: .bold))
-                .viewStroke(.white, width: 2)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.cyan)
-    }
-}
-
-struct StrokeViewDemo_Previews: PreviewProvider {
-    static var previews: some View {
-        StrokeViewDemo()
-    }
-}
-```
-
 ### 渐变多层描边
 
 ```swift
 import SwiftUI
-import ViewStrokeKit
 
-struct StrokeGradientViewDemo: View {
+// 渐变描边示例
+public struct GradientStrokeDemo: View {
     // 渐变色描边（图标）
-    let iconStrokeGradient = LinearGradient(colors: [.yellow, .orange, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+    let iconGradient = LinearGradient(
+        colors: [.yellow, .orange, .purple],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
     
     // 渐变色描边（文字）
-    let textStrokeGradient = LinearGradient(colors: [.cyan, .purple], startPoint: .leading, endPoint: .trailing)
+    let textGradient = LinearGradient(
+        colors: [.cyan, .purple],
+        startPoint: .leading,
+        endPoint: .trailing
+    )
     
     // 实心描边（文字）
-    let textStrokeSolidColor = Color.white
+    let solidStroke = Color.white
     
     public init() {}
     
@@ -100,22 +76,22 @@ struct StrokeGradientViewDemo: View {
             Image(systemName: "swift")
                 .foregroundStyle(.white)
                 .font(.system(size: 60))
-                .viewStroke(iconStrokeGradient, width: 3)
+                .viewStroke(iconGradient, width: 3)
             
             Text("SwiftUI")
                 .foregroundStyle(.white)
-                .font(.system(size: 60, weight: .bold))
-                .viewStroke(textStrokeGradient, width: 2)
-                .viewStroke(textStrokeSolidColor, width: 3)
+                .font(.system(size: 50, weight: .bold))
+                .viewStroke(textGradient, width: 2)
+                .viewStroke(solidStroke, width: 3)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.cyan)
     }
 }
 
-struct StrokeGradientViewDemo_Previews: PreviewProvider {
+struct GradientStrokeDemo_Previews: PreviewProvider {
     static var previews: some View {
-        StrokeGradientViewDemo()
+        GradientStrokeDemo()
     }
 }
 ```
@@ -124,39 +100,41 @@ struct StrokeGradientViewDemo_Previews: PreviewProvider {
 
 ```swift
 import SwiftUI
-import ViewStrokeKit
 
-struct StrokeViewContainerDemo: View {
+// 容器式描边示例
+public struct NestedStrokeDemo: View {
     // 定义渐变色
-    let iconStrokeGradient = LinearGradient(
+    let iconGradient = LinearGradient(
         colors: [.yellow, .orange, .purple],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
     
-    let textStrokeGradient = LinearGradient(
+    let textGradient = LinearGradient(
         colors: [.cyan, .purple],
         startPoint: .leading,
         endPoint: .trailing
     )
     
-    let textStrokeSolidColor = Color.white
+    let solidStroke = Color.white
     
-    var body: some View {
-        VStack(spacing: 40) {
+    public init() {}
+    
+    public var body: some View {
+        VStack {
             // 单层渐变描边图标
-            StrokeView(iconStrokeGradient, width: 3) {
+            StrokeView(iconGradient, width: 3) {
                 Image(systemName: "swift")
                     .foregroundStyle(.white)
                     .font(.system(size: 60))
             }
             
             // 双层描边文字（外层白边+内层渐变边）
-            StrokeView(textStrokeSolidColor, width: 3) {
-                StrokeView(textStrokeGradient, width: 2) {
+            StrokeView(solidStroke, width: 3) {
+                StrokeView(textGradient, width: 2) {
                     Text("SwiftUI")
                         .foregroundStyle(.white)
-                        .font(.system(size: 60, weight: .bold))
+                        .font(.system(size: 50, weight: .bold))
                 }
             }
         }
@@ -165,53 +143,10 @@ struct StrokeViewContainerDemo: View {
     }
 }
 
-struct StrokeViewContainerDemo_Previews: PreviewProvider {
+struct NestedStrokeDemo_Previews: PreviewProvider {
     static var previews: some View {
-        StrokeViewContainerDemo()
+        NestedStrokeDemo()
     }
 }
 ```
 
-### 两种方式对比
-
-| 特性           | `.viewStroke()` | `StrokeView` |
-| -------------- | --------------- | ------------ |
-| 语法简洁度     | ⭐️⭐️⭐️⭐️⭐️           | ⭐️⭐️⭐️          |
-| 多重描边便利性 | ⭐️⭐️⭐️             | ⭐️⭐️⭐️⭐️⭐️        |
-| 动态更新性能   | ⭐️⭐️⭐️⭐️            | ⭐️⭐️           |
-| 代码可读性     | ⭐️⭐️⭐️             | ⭐️⭐️⭐️⭐️         |
-
-**推荐场景**：
-- 简单描边：使用 `.viewStroke()`
-- 复杂多重描边：使用 `StrokeView` 容器
-
-
-## 🛠 API 文档
-
-### `viewStroke(_:width:)`
-
-```swift
-func viewStroke<S: ShapeStyle>(_ style: S, width: CGFloat) -> some View
-```
-
-**参数**:
-- `style`: 描边样式（支持 `Color` 或任意 `ShapeStyle`）
-- `width`: 描边宽度（单位：点）
-
-**返回值**:
-返回应用了描边效果的视图
-
-
-
-## 💡 设计建议
-
-1. **最佳宽度范围**：1-5 点（过宽可能影响可读性）
-2. **多重描边顺序**：从外到内依次应用
-3. **渐变描边**：使用 `LinearGradient`、`RadialGradient` 或 `AngularGradient`
-4. **性能优化**：避免在滚动视图中使用过多动态描边
-
-
-
-## 📜 许可证
-
-MIT 许可证 - 详见 [LICENSE](LICENSE) 文件

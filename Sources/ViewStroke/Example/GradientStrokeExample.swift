@@ -1,6 +1,6 @@
 //
 //  GradientStrokeExample.swift
-//  ViewStrokeKit
+//  ViewStroke
 //
 //  Created by devlink on 2025/8/10.
 //
