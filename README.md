@@ -49,6 +49,7 @@ dependencies: [
 
 ```swift
 import SwiftUI
+import ViewStroke
 
 // 渐变描边示例
 public struct GradientStrokeDemo: View {
@@ -100,6 +101,7 @@ struct GradientStrokeDemo_Previews: PreviewProvider {
 
 ```swift
 import SwiftUI
+import ViewStroke
 
 // 容器式描边示例
 public struct NestedStrokeDemo: View {
